@@ -1,0 +1,18 @@
+
+spring:
+  application:
+    name: likelion-security
+  security:
+    user:
+      password: likelion
+      name: likelion
+      roles: USER
+
+server:
+  servlet:
+    session:
+      timeout: 10m
+      cookie:
+        name: JSESSIONID
+  port: 8085
+
