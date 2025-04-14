@@ -15,8 +15,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/login", "/signup").permitAll() // /login /signup 은 허가를 해준다
+                        .anyRequest().authenticated() // 나머지는 다 인증이 필요하다
                 )
                 .formLogin(Customizer.withDefaults()) // 세션 기반 로그인 폼 제공
                 .logout(Customizer.withDefaults());   // 로그아웃 시 세션 삭제
