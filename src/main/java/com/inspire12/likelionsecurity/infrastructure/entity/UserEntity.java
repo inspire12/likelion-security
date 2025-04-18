@@ -9,7 +9,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserEntity {
 
     private String username;
@@ -18,5 +17,11 @@ public class UserEntity {
 
     public List<String> getRolesGranted() {
         return this.roles.stream().map(GrantedAuthority::getAuthority).toList();
+    }
+
+    public UserEntity(String username, String password, List<? extends GrantedAuthority> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 }

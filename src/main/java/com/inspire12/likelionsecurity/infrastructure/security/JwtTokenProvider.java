@@ -1,6 +1,7 @@
 package com.inspire12.likelionsecurity.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -48,17 +49,17 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public UserDetails getUserDetails(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
 
+        String username = claims.getSubject();
+        List<String> roles = claims.get("roles", List.class);
 
-    public String generate(String username) {
-
-        return Jwts.builder()
-                .setSubject(username)
-//                .setIssuer()
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + tokenValidityInMs))
-                .signWith(this.secretKey)
-                .compact();
+        return new CustomUserDetails(username, roles.stream().map(SimpleGrantedAuthority::new).toList());
     }
 
     public boolean validateToken(String token) {
@@ -80,22 +81,5 @@ public class JwtTokenProvider {
 
     private Claims getClaims(String token) {
         return Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
-    }
-
-    public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        String username = claims.getSubject();
-
-        List<SimpleGrantedAuthority> authorities =
-                Arrays.stream(claims.get("roles").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
-
-        return new UsernamePasswordAuthenticationToken(username, "", authorities);
     }
 }
