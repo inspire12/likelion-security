@@ -1,4 +1,4 @@
-package com.inspire12.likelionsecurity.controller;
+package com.inspire12.likelionsecurity.presentation.controller;
 
 import org.springframework.stereotype.Controller;
 
