@@ -3,6 +3,7 @@ package com.inspire12.likelionsecurity.infrastructure.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,8 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final Key secretKey; // 보안상 별도 관리 필요
-    private static final long tokenValidityInMs = 60 * 60 * 100;
+    @Getter
+    private static final long tokenValidityInMs = 60 * 60 * 1000; // 한 시간
 
     public JwtTokenProvider(@Value("${secret-key}") String key) {
         this.secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));

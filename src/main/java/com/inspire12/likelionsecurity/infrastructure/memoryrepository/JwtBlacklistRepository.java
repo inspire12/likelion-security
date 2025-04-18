@@ -1,19 +1,30 @@
 package com.inspire12.likelionsecurity.infrastructure.memoryrepository;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.inspire12.likelionsecurity.infrastructure.security.JwtTokenProvider;
 import org.springframework.stereotype.Repository;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.time.Duration;
 
 @Repository
 public class JwtBlacklistRepository {
-    private final Set<String> blacklist = ConcurrentHashMap.newKeySet();
+    private final Cache<String, Boolean> blacklistCache;
 
-    public void blacklistToken(String token) {
-        blacklist.add(token);
+    public JwtBlacklistRepository() {
+        this.blacklistCache = Caffeine.newBuilder()
+                .expireAfterWrite(Duration.ofMillis(JwtTokenProvider.getTokenValidityInMs())) // JWT 유효시간과 맞춰 설정
+                .maximumSize(10000) // 최대 캐시 개수 제한
+                .build();
     }
 
+    // 블랙리스트에 JWT 등록
+    public void blacklistToken(String token) {
+        blacklistCache.put(token, true);
+    }
+
+    // JWT가 블랙리스트에 있는지 확인
     public boolean isBlacklisted(String token) {
-        return blacklist.contains(token);
+        return blacklistCache.getIfPresent(token) != null;
     }
 }
