@@ -5,6 +5,7 @@ import com.inspire12.likelionsecurity.presentation.controller.dto.request.LoginR
 import com.inspire12.likelionsecurity.presentation.controller.dto.request.SignupRequest;
 import com.inspire12.likelionsecurity.presentation.controller.dto.response.LoginResponse;
 import com.inspire12.likelionsecurity.presentation.controller.dto.response.SignupResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -12,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RequestMapping("/authen")
 @RestController
@@ -63,4 +62,12 @@ public class SecurityController {
             );
         }
     }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        authenticationService.logout(request);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -1,24 +1,20 @@
 package com.inspire12.likelionsecurity.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -63,7 +59,7 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-        if (getUsername(token) != null && isExpired(token)) {
+        if (token != null && getUsername(token) != null && isExpired(token)) {
             return true;
         }
         throw new AuthenticationCredentialsNotFoundException("Invalid token");
