@@ -1,17 +1,11 @@
 package com.inspire12.likelionsecurity.service;
 
-import com.inspire12.likelionsecurity.dto.CustomUserDetails;
 import com.inspire12.likelionsecurity.dto.SignupRequest;
 import com.inspire12.likelionsecurity.entity.UserEntity;
 import com.inspire12.likelionsecurity.repository.UserMemoryRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,15 +30,15 @@ public class SignupService {
                 passwordEncoder.encode(signupRequest.getPassword()), signupRequest.getRoles());
         userMemoryRepository.save(user);
 
-        // 인증 처리
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(new CustomUserDetails(user), signupRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        // 세션 생성 및 SecurityContext 세션에 저장
-        HttpSession session = request.getSession(true);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
+//        // 인증 처리
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(new CustomUserDetails(user), signupRequest.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        // 세션 생성 및 SecurityContext 세션에 저장
+//        HttpSession session = request.getSession(true);
+//        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+//                SecurityContextHolder.getContext());
     }
 
 

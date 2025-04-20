@@ -28,6 +28,12 @@ public class SecurityApiController {
         return ResponseEntity.ok("회원가입 및 로그인 완료");
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> signin(@RequestBody SignupRequest signupRequest, HttpServletRequest request) {
+        signupService.register(signupRequest, request);
+        return ResponseEntity.ok("회원가입 및 로그인 완료");
+    }
+
     @GetMapping("/hi")
     public String hi() {
         return "hi";
