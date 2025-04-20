@@ -19,12 +19,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/signup").permitAll() // /login /signup 은 허가를 해준다
                         .anyRequest().authenticated() // 나머지는 다 인증이 필요하다
                 )
-                .formLogin(Customizer.withDefaults()) // 세션 기반 로그인 폼 제공
+                .httpBasic(Customizer.withDefaults()) // 세션 기반 로그인 폼 제공
                 .sessionManagement(session -> session
                         .maximumSessions(2)
                         .maxSessionsPreventsLogin(false)
