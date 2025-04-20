@@ -48,12 +48,7 @@ public class SecurityConfig {
                         .maxSessionsPreventsLogin(false)
                         .sessionRegistry(sessionRegistry())
                 )
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            log.warn("Authentication exception: {}", authException.getMessage());
-                            response.sendRedirect("/login");
-                        })
-                )
+
 //                .httpBasic(Customizer.withDefaults())
 
                 .logout(Customizer.withDefaults());   // 로그아웃 시 세션 삭제
