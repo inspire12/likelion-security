@@ -6,7 +6,7 @@ spring:
     user:
       password: likelion
       name: likelion
-      roles: ROLE_USER
+      roles: USER
 
 server:
   servlet:
