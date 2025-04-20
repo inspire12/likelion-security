@@ -1,10 +1,12 @@
 package com.inspire12.likelionsecurity.controller;
 
+import com.inspire12.likelionsecurity.dto.SignupRequest;
 import com.inspire12.likelionsecurity.service.SessionCheckService;
+import com.inspire12.likelionsecurity.service.SignupService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,9 +15,17 @@ import java.util.List;
 public class SecurityApiController {
 
     private final SessionCheckService sessionCheckService;
+    private final SignupService signupService;
 
-    public SecurityApiController(SessionCheckService sessionCheckService) {
+    public SecurityApiController(SessionCheckService sessionCheckService, SignupService signupService) {
         this.sessionCheckService = sessionCheckService;
+        this.signupService = signupService;
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest, HttpServletRequest request) {
+        signupService.register(signupRequest, request);
+        return ResponseEntity.ok("회원가입 및 로그인 완료");
     }
 
     @GetMapping("/hi")
