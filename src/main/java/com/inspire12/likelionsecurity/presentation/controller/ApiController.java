@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+import java.util.List;
+
 @RequestMapping("/api")
 @RestController
 public class ApiController {
@@ -16,8 +19,10 @@ public class ApiController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<LoginResponse> getMe() {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<LoginResponse> getMe(Principal principal) {
+        String name = principal.getName();
+        LoginResponse response = new LoginResponse("", name, List.of());
+        return ResponseEntity.ok().body(response);
     }
 
 }
