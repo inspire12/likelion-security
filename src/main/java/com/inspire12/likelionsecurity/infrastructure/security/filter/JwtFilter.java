@@ -27,18 +27,24 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtBlacklistRepository = jwtBlacklistRepository;
     }
 
+    private boolean isPassedUrls(String uri){
+        return uri.startsWith("/api/security") // 로그인, 가입 등
+                || uri.startsWith("/login/oauth2/code"); // oauth
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI();
 
         // 제외 URL 검사
-        if (uri.startsWith("/authen")) {
+        if (isPassedUrls(uri)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = extractToken(request);
+
         if (jwtTokenProvider.validateToken(token)) {
             if (jwtBlacklistRepository.isBlacklisted(token)) {
                 throw new AuthenticationCredentialsNotFoundException("Blacklisted token");
@@ -57,7 +63,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
-        throw new AuthenticationCredentialsNotFoundException("Bearer token not found");
+        return null;
     }
 }
 

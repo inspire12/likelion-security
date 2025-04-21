@@ -1,5 +1,6 @@
-
 spring:
+  profiles:
+    active: oauth2
   application:
     name: likelion-security
   security:
@@ -9,11 +10,16 @@ spring:
       roles: USER
 
 server:
+  port: 8085
   servlet:
     session:
       timeout: 10m
       cookie:
         name: JSESSIONID
-  port: 8085
+
 
 secret-key: likelion-backend-plus-4th-process-1st-project-secretkey
+logging:
+  level:
+    org.springframework.security: DEBUG
+

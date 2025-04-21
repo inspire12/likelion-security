@@ -5,11 +5,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -22,24 +22,30 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     private final Key secretKey; // 보안상 별도 관리 필요
     @Getter
-    private static final long tokenValidityInMs = 60 * 60 * 1000; // 한 시간
+    private static final long tokenValidityInMs = 60L * 60 * 1000 * 1000;
 
     public JwtTokenProvider(@Value("${secret-key}") String key) {
         this.secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
     }
 
-    // JWT 생성 메서드
+    public String generateTokenByOauth2(Authentication authentication) {
+        DefaultOAuth2User oauth2User = (DefaultOAuth2User) authentication.getPrincipal();
+        return getToken(oauth2User.getName(), oauth2User.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+    }
+
     public String generateToken(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
+        return getToken(userDetails.getUsername(), roles);
+    }
 
+    private String getToken(String username ,List<String> roles) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenValidityInMs);
-
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())  // 사용자 식별 정보 (주로 username)
+                .setSubject(username)  // 사용자 식별 정보 (주로 username)
                 .claim("roles", roles)                  // 권한 정보
                 .setIssuedAt(now)                       // 발행 시간
                 .setExpiration(validity)                // 만료 시간
@@ -64,7 +70,7 @@ public class JwtTokenProvider {
         if (token != null && getUsername(token) != null && isExpired(token)) {
             return true;
         }
-        throw new AuthenticationCredentialsNotFoundException("Invalid token");
+        return false;
     }
 
     public String getUsername(String token) {
