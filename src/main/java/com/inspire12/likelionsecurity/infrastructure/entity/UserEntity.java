@@ -1,13 +1,17 @@
-package com.inspire12.likelionsecurity.dto;
+package com.inspire12.likelionsecurity.infrastructure.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
+public class UserEntity {
     private String username;
     private String password;
+    private List<String> roles = new ArrayList<>();
 }

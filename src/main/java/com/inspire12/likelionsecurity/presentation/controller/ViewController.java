@@ -1,6 +1,6 @@
-package com.inspire12.likelionsecurity.controller;
+package com.inspire12.likelionsecurity.presentation.controller;
 
-import com.inspire12.likelionsecurity.dto.SignupRequest;
+import com.inspire12.likelionsecurity.presentation.dto.SignupRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,10 +1,10 @@
-package com.inspire12.likelionsecurity.service;
+package com.inspire12.likelionsecurity.application.service;
 
-import com.inspire12.likelionsecurity.dto.CustomUserDetails;
-import com.inspire12.likelionsecurity.dto.LoginRequest;
-import com.inspire12.likelionsecurity.dto.SignupRequest;
-import com.inspire12.likelionsecurity.entity.UserEntity;
-import com.inspire12.likelionsecurity.repository.UserMemoryRepository;
+import com.inspire12.likelionsecurity.infrastructure.security.CustomUserDetails;
+import com.inspire12.likelionsecurity.presentation.dto.LoginRequest;
+import com.inspire12.likelionsecurity.presentation.dto.SignupRequest;
+import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
+import com.inspire12.likelionsecurity.infrastructure.memoryrepository.UserMemoryRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.AuthenticationManager;

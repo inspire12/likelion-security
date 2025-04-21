@@ -1,4 +1,4 @@
-package com.inspire12.likelionsecurity.dto;
+package com.inspire12.likelionsecurity.presentation.dto;
 
 import com.inspire12.likelionsecurity.enums.RoleEnum;
 import lombok.AllArgsConstructor;

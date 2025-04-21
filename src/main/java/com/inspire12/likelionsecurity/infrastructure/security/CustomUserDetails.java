@@ -1,6 +1,6 @@
-package com.inspire12.likelionsecurity.dto;
+package com.inspire12.likelionsecurity.infrastructure.security;
 
-import com.inspire12.likelionsecurity.entity.UserEntity;
+import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

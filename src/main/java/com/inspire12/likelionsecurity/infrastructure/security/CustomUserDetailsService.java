@@ -1,8 +1,7 @@
-package com.inspire12.likelionsecurity.service;
+package com.inspire12.likelionsecurity.infrastructure.security;
 
 
-import com.inspire12.likelionsecurity.dto.CustomUserDetails;
-import com.inspire12.likelionsecurity.repository.UserMemoryRepository;
+import com.inspire12.likelionsecurity.infrastructure.memoryrepository.UserMemoryRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

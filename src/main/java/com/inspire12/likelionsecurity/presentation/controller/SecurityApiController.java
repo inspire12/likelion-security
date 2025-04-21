@@ -1,9 +1,9 @@
-package com.inspire12.likelionsecurity.controller;
+package com.inspire12.likelionsecurity.presentation.controller;
 
-import com.inspire12.likelionsecurity.dto.LoginRequest;
-import com.inspire12.likelionsecurity.dto.SignupRequest;
-import com.inspire12.likelionsecurity.service.SessionCheckService;
-import com.inspire12.likelionsecurity.service.SignupService;
+import com.inspire12.likelionsecurity.presentation.dto.LoginRequest;
+import com.inspire12.likelionsecurity.presentation.dto.SignupRequest;
+import com.inspire12.likelionsecurity.application.service.SessionCheckService;
+import com.inspire12.likelionsecurity.application.service.SignupService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;

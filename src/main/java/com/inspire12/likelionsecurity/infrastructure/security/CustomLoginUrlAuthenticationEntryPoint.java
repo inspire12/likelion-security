@@ -1,4 +1,4 @@
-package com.inspire12.likelionsecurity.service;
+package com.inspire12.likelionsecurity.infrastructure.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

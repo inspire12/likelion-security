@@ -1,6 +1,6 @@
-package com.inspire12.likelionsecurity.repository;
+package com.inspire12.likelionsecurity.infrastructure.memoryrepository;
 
-import com.inspire12.likelionsecurity.entity.UserEntity;
+import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.concurrent.ConcurrentHashMap;

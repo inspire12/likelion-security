@@ -1,4 +1,4 @@
-package com.inspire12.likelionsecurity.service;
+package com.inspire12.likelionsecurity.application.service;
 
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
