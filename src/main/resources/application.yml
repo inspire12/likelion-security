@@ -7,7 +7,9 @@ spring:
       password: likelion
       name: likelion
       roles: USER
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 server:
   servlet:
     session:
