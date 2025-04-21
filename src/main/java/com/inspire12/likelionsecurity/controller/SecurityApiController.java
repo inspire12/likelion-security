@@ -1,10 +1,13 @@
 package com.inspire12.likelionsecurity.controller;
 
+import com.inspire12.likelionsecurity.dto.LoginRequest;
 import com.inspire12.likelionsecurity.dto.SignupRequest;
 import com.inspire12.likelionsecurity.service.SessionCheckService;
 import com.inspire12.likelionsecurity.service.SignupService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +17,7 @@ import java.util.List;
 @RestController
 public class SecurityApiController {
 
+    private final Logger log = LoggerFactory.getLogger(SecurityApiController.class);
     private final SessionCheckService sessionCheckService;
     private final SignupService signupService;
 
@@ -23,8 +27,18 @@ public class SecurityApiController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest, HttpServletRequest request) {
+//    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest, HttpServletRequest request) {
+    public ResponseEntity<?> signup(@ModelAttribute SignupRequest signupRequest, //application/x-www-form-urlencoded
+                                    HttpServletRequest request) {
+        log.info("signup request received");
         signupService.register(signupRequest, request);
+        return ResponseEntity.ok("회원가입 및 로그인 완료");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> signin(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+        log.info("signup request received");
+        signupService.signin(loginRequest, request);
         return ResponseEntity.ok("회원가입 및 로그인 완료");
     }
 

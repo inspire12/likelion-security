@@ -1,8 +1,10 @@
 package com.inspire12.likelionsecurity.config;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -14,10 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Slf4j
 @Configuration
 //@EnableWebSecurity // 3.x 부터 자동처리
 public class SecurityConfig {
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getName());
 
     @Bean
     public SessionRegistry sessionRegistry() {
@@ -38,19 +40,31 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/security/signup").permitAll() // /login /signup 은 허가를 해준다
+                        .requestMatchers(HttpMethod.GET, "/", "/login", "/signup", "/password/reset").permitAll() // /login /signup 은 허가를 해준다
+                        .requestMatchers(HttpMethod.POST,  "/security/login", "/security/signup", "/security/password/reset").permitAll() // /login /signup 은 허가를 해준다
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated() // 나머지는 다 인증이 필요하다
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(Customizer.withDefaults()) // 세션 기반 로그인 폼 제공
+                .formLogin(f -> f
+                        .loginPage("/login").permitAll() // 명시적으로 로그인 페이지 설정
+                        .loginProcessingUrl("/security/login") // POST 로그인 처리 경로
+
+                        .failureHandler((request, response, exception) -> {
+                            log.info("로그인 실패: {}", request.getRequestURI());
+                            response.sendRedirect("/login?error");
+                        })
+                        .defaultSuccessUrl("/", true)) // 로그인 후 홈으로 이동) // 세션 기반 로그인 폼 제공
                 .sessionManagement(session -> session
-                        .maximumSessions(2)
+                                .maximumSessions(2)
                         .maxSessionsPreventsLogin(false)
                         .sessionRegistry(sessionRegistry())
                 )
 
 //                .httpBasic(Customizer.withDefaults())
-
+//                .exceptionHandling(exception -> exception
+//                        .authenticationEntryPoint(loginUrlAuthenticationEntryPoint())
+//                )
                 .logout(Customizer.withDefaults());   // 로그아웃 시 세션 삭제
         return http.build();
     }
