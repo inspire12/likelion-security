@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String uri = request.getRequestURI();
 
         // 제외 URL 검사
-        if (uri.startsWith("/authen")) {
+        if (uri.startsWith("/security")) {
             filterChain.doFilter(request, response);
             return;
         }
