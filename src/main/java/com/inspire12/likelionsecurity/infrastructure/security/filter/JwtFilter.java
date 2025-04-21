@@ -20,7 +20,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private final List<String> excludeUrls = List.of("/authen/**", "/authen/login", "/login", "/authen/signup", "/signup");
+    private final List<String> excludeUrls = List.of("/security/**", "/security/login", "/login", "/security/signup", "/signup");
 
     public JwtFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -32,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String uri = request.getRequestURI();
 
         // 제외 URL 검사
-        if (uri.startsWith("/authen")) {
+        if (uri.startsWith("/security")) {
             filterChain.doFilter(request, response);
             return;
         }

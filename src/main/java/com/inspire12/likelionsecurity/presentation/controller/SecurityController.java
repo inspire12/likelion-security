@@ -8,14 +8,9 @@ import com.inspire12.likelionsecurity.presentation.controller.dto.response.Signu
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
-@RequestMapping("/authen")
+@RequestMapping("/api/security")
 @RestController
 public class SecurityController {
     private final AuthenticationService authenticationService;
@@ -40,6 +35,12 @@ public class SecurityController {
 //
 //        return ResponseEntity.ok().build();
 //    }
+    @GetMapping("/me")
+    public ResponseEntity<LoginResponse> getMe(@RequestBody LoginRequest loginRequest) {
+
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> signin(@RequestBody LoginRequest loginRequest) {
         try {

@@ -1,24 +1,20 @@
 package com.inspire12.likelionsecurity.application.service;
 
-import com.inspire12.likelionsecurity.domain.User;
 import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
 import com.inspire12.likelionsecurity.infrastructure.memoryrepository.UserMemoryRepository;
-import com.inspire12.likelionsecurity.infrastructure.security.CustomUserDetailsService;
 import com.inspire12.likelionsecurity.infrastructure.security.JwtTokenProvider;
-import com.inspire12.likelionsecurity.infrastructure.security.SignupService;
 import com.inspire12.likelionsecurity.presentation.controller.dto.request.LoginRequest;
 import com.inspire12.likelionsecurity.presentation.controller.dto.request.SignupRequest;
 import com.inspire12.likelionsecurity.presentation.controller.dto.response.LoginResponse;
 import com.inspire12.likelionsecurity.presentation.controller.dto.response.SignupResponse;
-import com.inspire12.likelionsecurity.support.UserMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +45,7 @@ public class AuthenticationService {
         );
         String token = jwtTokenProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return new LoginResponse(
                 token,
@@ -69,4 +66,5 @@ public class AuthenticationService {
         UserEntity userSaved = userMemoryRepository.save(user);
         return new SignupResponse(userSaved.getUsername(), "가입 성공", userSaved.getRolesGranted());
     }
+
 }
