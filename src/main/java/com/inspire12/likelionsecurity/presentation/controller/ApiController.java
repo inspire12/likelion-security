@@ -1,11 +1,12 @@
 package com.inspire12.likelionsecurity.presentation.controller;
 
-import org.springframework.stereotype.Controller;
+import com.inspire12.likelionsecurity.presentation.controller.dto.response.LoginResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/security")
+@RequestMapping("/api")
 @RestController
 public class ApiController {
 
@@ -13,4 +14,10 @@ public class ApiController {
     public String hi() {
         return "hi";
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<LoginResponse> getMe() {
+        return ResponseEntity.ok().build();
+    }
+
 }

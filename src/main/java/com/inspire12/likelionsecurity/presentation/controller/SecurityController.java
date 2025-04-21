@@ -35,11 +35,6 @@ public class SecurityController {
 //
 //        return ResponseEntity.ok().build();
 //    }
-    @GetMapping("/me")
-    public ResponseEntity<LoginResponse> getMe(@RequestBody LoginRequest loginRequest) {
-
-        return ResponseEntity.ok().build();
-    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> signin(@RequestBody LoginRequest loginRequest) {

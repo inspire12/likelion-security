@@ -1,20 +1,11 @@
 package com.inspire12.likelionsecurity.infrastructure.security;
 
-import com.inspire12.likelionsecurity.domain.User;
 import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
 import com.inspire12.likelionsecurity.infrastructure.memoryrepository.UserMemoryRepository;
-import com.inspire12.likelionsecurity.presentation.controller.dto.request.SignupRequest;
-import com.inspire12.likelionsecurity.support.UserMapper;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -30,5 +21,4 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity userEntity = userMemoryRepository.findByUsername(username);
         return new CustomUserDetails(userEntity);
     }
-
 }
