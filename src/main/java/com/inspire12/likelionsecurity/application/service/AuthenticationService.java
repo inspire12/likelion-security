@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ public class AuthenticationService {
     private final JwtBlacklistRepository jwtBlacklistRepository;
 
     public AuthenticationService(JwtTokenProvider jwtTokenProvider,
-                                 AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserMemoryRepository userMemoryRepository, JwtBlacklistRepository jwtBlacklistRepository) {
+                                 AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserMemoryRepository userMemoryRepository,
+                                 JwtBlacklistRepository jwtBlacklistRepository) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
@@ -49,6 +51,7 @@ public class AuthenticationService {
         );
         String token = jwtTokenProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return new LoginResponse(
                 token,

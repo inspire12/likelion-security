@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/security")
+@RequestMapping("/api/security")
 @RestController
 public class SecurityController {
     private final AuthenticationService authenticationService;
@@ -39,6 +39,7 @@ public class SecurityController {
 //
 //        return ResponseEntity.ok().build();
 //    }
+
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> signin(@RequestBody LoginRequest loginRequest) {
         try {

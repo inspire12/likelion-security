@@ -58,8 +58,8 @@ public class SecurityConfig {
                         -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/security/**", "/security/login", "/security/signup").permitAll() // /login /signup 은 허가를 해준다
-                        .requestMatchers(HttpMethod.POST, "/security/**", "/security/login", "/security/signup").permitAll() // /login /signup 은 허가를 해준다
+                        .requestMatchers(HttpMethod.GET, "/api/security/login", "/api/security/signup").permitAll() // /login /signup 은 허가를 해준다
+                        .requestMatchers(HttpMethod.POST, "/api/security/login", "/api/security/signup").permitAll() // /login /signup 은 허가를 해준다
                         .anyRequest().authenticated() // 나머지는 다 인증이 필요하다
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

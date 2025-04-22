@@ -15,12 +15,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtBlacklistRepository jwtBlacklistRepository;
+
+    private final List<String> excludeUrls = List.of("/api/security");
 
     public JwtFilter(JwtTokenProvider jwtTokenProvider, JwtBlacklistRepository jwtBlacklistRepository) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -33,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String uri = request.getRequestURI();
 
         // 제외 URL 검사
-        if (uri.startsWith("/security")) {
+        if (excludeUrls.stream().anyMatch(uri::startsWith)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -57,7 +60,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
-        throw new AuthenticationCredentialsNotFoundException("Bearer token not found");
+        return null;
     }
 }
 
