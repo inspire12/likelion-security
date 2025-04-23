@@ -13,6 +13,15 @@ spring:
 
   thymeleaf:
     cache: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  session:
+    redis:
+      repository-type: indexed
+
 server:
   servlet:
     session:
