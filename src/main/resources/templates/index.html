@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>홈</title>
+</head>
+<body>
+<h1>홈 페이지</h1>
+
+<!-- 로그인 사용자 -->
+<p th:if="${username != null}" th:text="'안녕하세요, ' + ${username} + '님! 로그인에 성공하셨습니다.'">
+    안녕하세요!
+</p>
+
+<!-- 비로그인 사용자 -->
+<p th:if="${username == null}">
+    안녕하세요! <a th:href="@{/login}">로그인</a> 해주세요.
+</p>
+
+<a th:href="@{/logout}" th:if="${username != null}">로그아웃</a>
+</body>
+</html>

@@ -7,7 +7,12 @@ spring:
       password: likelion
       name: likelion
       roles: USER
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
+  thymeleaf:
+    cache: false
 server:
   servlet:
     session:
@@ -15,5 +20,9 @@ server:
       cookie:
         name: JSESSIONID
   port: 8085
+logging:
+  level:
+    org.springframework.security: debug
+
 
 secret-key: likelion-backend-plus-4th-process-1st-project-secretkey
