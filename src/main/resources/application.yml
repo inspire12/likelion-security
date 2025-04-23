@@ -16,3 +16,4 @@ server:
         name: JSESSIONID
   port: 8085
 
+secret-key: likelion-backend-plus-4th-process-1st-project-secretkey
