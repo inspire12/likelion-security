@@ -1,0 +1,24 @@
+spring:
+  mail:
+    host: smtp.naver.com
+    port: 587
+    username: ""
+    password: ENC()
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: true
+    ssl:
+      enabled: true
+
+jasypt:
+  encryptor:
+    password: likelion-backend-plus-4th-process-1st-project-secretkey
+    algorithm: PBEWithMD5AndDES
+    pool-size: 1
+    key-obtention-iterations: 1000
+    string-output-type: base64

@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
     private String username;
+    private String email;
 
     private List<? extends GrantedAuthority> roles;
 

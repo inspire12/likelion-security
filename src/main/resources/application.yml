@@ -7,6 +7,8 @@ spring:
       password: likelion
       name: likelion
       roles: USER
+  profiles:
+    active: "mail, oauth2"
 
 server:
   servlet:

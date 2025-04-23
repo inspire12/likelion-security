@@ -1,10 +1,8 @@
 package com.inspire12.likelionsecurity.infrastructure.memoryrepository;
 
 import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -17,7 +15,7 @@ public class UserMemoryRepository {
 
     public UserEntity findByUsername(String username) {
         if (!userDatasource.containsKey(username)) {
-            throw new AuthenticationCredentialsNotFoundException(username);
+            return null;
         }
         return userDatasource.get(username);
     }

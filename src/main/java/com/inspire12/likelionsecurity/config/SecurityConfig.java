@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-//@EnableWebSecurity // 3.x 부터 자동처리되어 필요없음
+// @EnableWebSecurity // 3.x 부터 자동처리되어 필요없음
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
@@ -30,7 +30,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -54,22 +55,27 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session
-                        -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/security/login", "/api/security/signup").permitAll() // /login /signup 은 허가를 해준다
-                        .requestMatchers(HttpMethod.POST, "/api/security/login", "/api/security/signup").permitAll() // /login /signup 은 허가를 해준다
+                        .requestMatchers(HttpMethod.GET, "/api/security/login", "/api/security/signup").permitAll() // /login
+                                                                                                                    // /signup
+                                                                                                                    // 은
+                                                                                                                    // 허가를
+                                                                                                                    // 해준다
+                        .requestMatchers(HttpMethod.POST, "/api/security/login", "/api/security/signup",
+                                "/api/security/request-password-reset",
+                                "/api/security/reset-password")
+                        .permitAll() // /login /signup 은 허가를 해준다
+
                         .anyRequest().authenticated() // 나머지는 다 인증이 필요하다
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-// 인증이 되지 않으면 login 페이지로 넘긴다 --> token이면 프론트에서 처리
+                // 인증이 되지 않으면 login 페이지로 넘긴다 --> token이면 프론트에서 처리
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) ->
-                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
-                );
+                        .authenticationEntryPoint((request, response, authException) -> response
+                                .sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")));
 
         return http.build();
     }
 }
-

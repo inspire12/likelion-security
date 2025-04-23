@@ -4,10 +4,11 @@ import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
 import com.inspire12.likelionsecurity.infrastructure.memoryrepository.JwtBlacklistRepository;
 import com.inspire12.likelionsecurity.infrastructure.memoryrepository.UserMemoryRepository;
 import com.inspire12.likelionsecurity.infrastructure.security.JwtTokenProvider;
-import com.inspire12.likelionsecurity.presentation.controller.dto.request.LoginRequest;
-import com.inspire12.likelionsecurity.presentation.controller.dto.request.SignupRequest;
-import com.inspire12.likelionsecurity.presentation.controller.dto.response.LoginResponse;
-import com.inspire12.likelionsecurity.presentation.controller.dto.response.SignupResponse;
+import com.inspire12.likelionsecurity.presentation.dto.request.LoginRequest;
+import com.inspire12.likelionsecurity.presentation.dto.request.SignupRequest;
+import com.inspire12.likelionsecurity.presentation.dto.response.LoginResponse;
+import com.inspire12.likelionsecurity.presentation.dto.response.SignupResponse;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -85,4 +86,5 @@ public class AuthenticationService {
         }
         throw new AuthenticationCredentialsNotFoundException("invalid token");
     }
+
 }
