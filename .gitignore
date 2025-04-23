@@ -35,3 +35,5 @@ out/
 
 ### VS Code ###
 .vscode/
+*-mail.yml
+*-oauth2.yml
