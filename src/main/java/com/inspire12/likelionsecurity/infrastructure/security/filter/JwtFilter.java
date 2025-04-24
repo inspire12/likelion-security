@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI();
 
-        // 제외 URL 검사
+        // 신분증 검사 하는 곳 - 제외 URL 검사
         if (excludeUrls.stream().anyMatch(uri::startsWith)) {
             filterChain.doFilter(request, response);
             return;
