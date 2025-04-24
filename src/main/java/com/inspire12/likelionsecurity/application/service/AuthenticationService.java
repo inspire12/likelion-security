@@ -1,8 +1,8 @@
 package com.inspire12.likelionsecurity.application.service;
 
-import com.inspire12.likelionsecurity.infrastructure.entity.UserEntity;
+import com.inspire12.likelionsecurity.application.repository.UserRepository;
+import com.inspire12.likelionsecurity.domain.User;
 import com.inspire12.likelionsecurity.infrastructure.memoryrepository.JwtBlacklistRepository;
-import com.inspire12.likelionsecurity.infrastructure.memoryrepository.UserMemoryRepository;
 import com.inspire12.likelionsecurity.infrastructure.security.JwtTokenProvider;
 import com.inspire12.likelionsecurity.presentation.controller.dto.request.LoginRequest;
 import com.inspire12.likelionsecurity.presentation.controller.dto.request.SignupRequest;
@@ -16,9 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,16 +26,16 @@ import java.util.stream.Collectors;
 public class AuthenticationService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
-    private final UserMemoryRepository userMemoryRepository;
+
+    private final UserRepository userRepository;
     private final JwtBlacklistRepository jwtBlacklistRepository;
 
     public AuthenticationService(JwtTokenProvider jwtTokenProvider,
-                                 AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, UserMemoryRepository userMemoryRepository, JwtBlacklistRepository jwtBlacklistRepository) {
+                                 AuthenticationManager authenticationManager,
+                                 UserRepository userRepository, JwtBlacklistRepository jwtBlacklistRepository) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
-        this.userMemoryRepository = userMemoryRepository;
+        this.userRepository = userRepository;
         this.jwtBlacklistRepository = jwtBlacklistRepository;
     }
 
@@ -50,7 +48,6 @@ public class AuthenticationService {
         );
         String token = jwtTokenProvider.generateToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return new LoginResponse(
                 token,
@@ -66,10 +63,9 @@ public class AuthenticationService {
         if (signupRequest.getRoles().isEmpty()) {
             grantedAuthorities = AuthorityUtils.createAuthorityList("ROLE_USER");
         }
-        String encode = passwordEncoder.encode(signupRequest.getPassword());
-        UserEntity user = new UserEntity(signupRequest.getUsername(), encode, grantedAuthorities);
-        UserEntity userSaved = userMemoryRepository.save(user);
-        return new SignupResponse(userSaved.getUsername(), "가입 성공", userSaved.getRolesGranted());
+        User user = userRepository.signup(signupRequest.getUsername(), signupRequest.getPassword(), grantedAuthorities);
+
+        return new SignupResponse(user.getUsername(), "가입 성공", user.getRolesGranted());
     }
 
 
