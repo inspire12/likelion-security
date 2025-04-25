@@ -37,3 +37,8 @@ out/
 .vscode/
 *-oauth2.yml
 *-mail.yml
+*-data/**
+
+**/grafana-data/**
+**/prometheus-data/**
+**/loki-data/**
