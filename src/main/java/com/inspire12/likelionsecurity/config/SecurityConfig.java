@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .successHandler(oAuth2AuthenticationSuccessHandler())
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/security/**", "/api/security/login", "/api/security/signup").permitAll() // /login /signup 은 허가를 해준다
+                        .requestMatchers(HttpMethod.GET, "/api/security/**", "/api/security/login", "/api/security/signup", "/actuator/**").permitAll() // /login /signup 은 허가를 해준다
                         .requestMatchers(HttpMethod.POST, "/api/security/**", "/api/security/login", "/api/security/signup").permitAll() // /login /signup 은 허가를 해준다
                         .requestMatchers(HttpMethod.OPTIONS, "/api/security/**", "/api/security/login", "/api/security/signup").permitAll() // /login /signup 은 허가를 해준다
                         .requestMatchers("/error").permitAll()

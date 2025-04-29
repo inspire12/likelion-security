@@ -1,16 +1,19 @@
 package com.inspire12.likelionsecurity.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -21,11 +24,13 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final Key secretKey; // 보안상 별도 관리 필요
+    private final HandlerExceptionResolver handlerExceptionResolver;
     @Getter
     private static final long tokenValidityInMs = 60L * 60 * 1000 * 1000;
 
-    public JwtTokenProvider(@Value("${secret-key}") String key) {
+    public JwtTokenProvider(@Value("${secret-key}") String key, HandlerExceptionResolver handlerExceptionResolver) {
         this.secretKey = Keys.hmacShaKeyFor(key.getBytes(StandardCharsets.UTF_8));
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
     public String generateTokenByOauth2(Authentication authentication) {
@@ -84,6 +89,11 @@ public class JwtTokenProvider {
     }
 
     private Claims getClaims(String token) {
-        return Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
+        try {
+            return Jwts.parser().setSigningKey(this.secretKey).parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
+            
+            throw new AuthenticationCredentialsNotFoundException(e.getMessage());
+        }
     }
 }
