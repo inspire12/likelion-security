@@ -1,5 +1,6 @@
-
 spring:
+  profiles:
+    active: oauth2
   application:
     name: likelion-security
   security:
@@ -7,22 +8,39 @@ spring:
       password: likelion
       name: likelion
       roles: USER
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
 
-  thymeleaf:
-    cache: false
 server:
+  port: 8085
   servlet:
     session:
       timeout: 10m
       cookie:
         name: JSESSIONID
-  port: 8085
-logging:
-  level:
-    org.springframework.security: debug
 
 
 secret-key: likelion-backend-plus-4th-process-1st-project-secretkey
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+management:
+  metrics:
+    tags:
+      application: spring-app
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info,metrics
+      base-path: /actuator
+  endpoint:
+    prometheus:
+      access: read_only
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true
