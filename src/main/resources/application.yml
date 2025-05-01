@@ -24,6 +24,13 @@ logging:
     org.springframework.security: DEBUG
 
 management:
+  metrics:
+    tags:
+      application: spring-app
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
   endpoints:
     web:
       exposure:
@@ -37,9 +44,3 @@ management:
     metrics:
       export:
         enabled: true
-  metrics:
-    tags:
-      application: spring
-    distribution:
-      percentiles-histogram:
-        http.server.requests: true
