@@ -15,5 +15,18 @@ scrape_configs:
           - host.docker.internal
         labels:
           job: nginx
-          host: your-hostname
+          host: nginx
           __path__: /var/log/nginx/*.log
+
+  - job_name: spring-logs
+    static_configs:
+      - targets:
+          - host.docker.internal:8085
+        labels:
+          compose_service: spring-app
+          job: spring
+          host: localhost:q
+          __path__: /var/log/spring-app/*.log
+    pipeline_stages:
+      - multiline:
+          firstline: '^\d{4}-\d{2}-\d{2}'

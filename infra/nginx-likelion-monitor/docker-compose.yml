@@ -24,7 +24,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./conf/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./grafana/datasources.yml:/etc/prometheus/datasources.yml
       - prometheus-data:/prometheus
     ports:
       - "9090:9090"
@@ -43,8 +43,10 @@ services:
     image: grafana/promtail:latest
     container_name: promtail
     volumes:
-      - ./conf/promtail-config.yaml:/etc/promtail/config.yaml
+      - ./conf/promtail-config.yml:/etc/promtail/config.yml
       - nginx_logs:/var/log/nginx
+      - /var/log/nginx:/var/log/nginx
+      - ../../logs:/var/log/spring-app # todo spring logs
     depends_on:
       - loki
 

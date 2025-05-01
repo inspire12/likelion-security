@@ -42,3 +42,4 @@ out/
 **/grafana-data/**
 **/prometheus-data/**
 **/loki-data/**
+**.log
